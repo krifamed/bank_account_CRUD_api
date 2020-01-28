@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const uuidv4 = require('uuid/v4');
 const Compt = require('../Compt');
+const Card = require('../Card');
 
 router.get('/', async (req, res)=>{
     try {
@@ -59,13 +60,14 @@ router.get('/:id', async (req, res)=>{
         compt = await Compt.findOne({
             where: {
                 id: id
-            }
+            }, include: ['cards']
         });
         if(!compt){
             return res.status(404).json({'message': 'Compt not found!'});
         }
         return res.status(200).json(compt);
     }catch(error){
+        console.log(error);
         return res.status(400).json({error});
     }
 });
